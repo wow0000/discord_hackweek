@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/wow0000/discord_hackweek#readme",
   "dependencies": {
-    "discord.js": "^11.5.1",
-    "twitter": "^1.7.1"
+    "discord.js": "^11.5.1"
   }
 }

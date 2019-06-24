@@ -1,0 +1,23 @@
+{
+  "name": "discord_hackweek",
+  "version": "1.0.0",
+  "description": "facemodifier",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wow0000/discord_hackweek.git"
+  },
+  "author": "wow",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wow0000/discord_hackweek/issues"
+  },
+  "homepage": "https://github.com/wow0000/discord_hackweek#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "twitter": "^1.7.1"
+  }
+}

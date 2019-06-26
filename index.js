@@ -52,16 +52,14 @@ function imageSearch(msg, url) {
   var imageID = getRandomInt(666);
   var filename = config.app.download + imageID.toString() + ".png"
   download(msg, filename, url, function() {
-    facedetect(filename, function(data) {
+    facedetect(filename, msg, function(data) {
       if (data.success === false) {
-        if (typeof url !== "boolean")
-        {
-          msg.reply("No faces found in this image. :///");
-          msg.reply("For best results the image should be a square like 400x400 Twitter profile images have the best results");
+        if (typeof url !== "boolean") {
+          msg.reply("No faces found in this image. :///\nFor best results the image should be a square like 400x400 Twitter profile images haves the best results");
           return;
         }
         console.log("False retrying...")
-        imageSearch(msg);
+        imageSearch(msg, false);
         return;
       }
       var attach = new Attachment(convertImages(filename, data));
@@ -77,9 +75,8 @@ client.on('message', msg => {
     msg.reply("Searching...")
     imageSearch(msg, false);
   } else if (words[0] === '*search') {
-    if (words[1] === undefined)
-    {
-      msg.reply("Usage: !search http://incredible.com/myimage.jpg")
+    if (words[1] === undefined) {
+      msg.reply("Usage: *search http://incredible.com/myimage.jpg")
       return;
     }
     msg.reply("Searching for this image")
@@ -128,9 +125,16 @@ function rgba_to_grayscale(rgba, nrows, ncols) {
   return gray;
 }
 
-function facedetect(fileurl, callback) {
-  var xy = images(fileurl).size();
+function facedetect(fileurl, msg, callback) {
+  var imageapi = images(fileurl);
+  var xy = imageapi.size();
   console.log(xy);
+  if (xy.width !== xy.height) {
+    msg.reply("Image isnt squared. It'll be resized and the accuracy wont be as good.");
+    imageapi.resize(xy.width, xy.width).save(fileurl);
+    var imageapi = images(fileurl);
+    xy = imageapi.size();
+  }
   var ctx = createCanvas(xy.width, xy.height).getContext('2d');
   var img = loadImage(fileurl);
   img.then(function(nik) {

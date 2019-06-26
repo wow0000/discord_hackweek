@@ -20,5 +20,7 @@ To get the best results with the *search command you must take _ squared picture
 
 # WHAT DID I USED ?
 [pico.js](https://github.com/tehnokv/picojs) for the face recognision and the cascade
+
 [discord.js](https://discord.js.org/)
+
 [images](https://www.npmjs.com/package/images) to merge images and resize them

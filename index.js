@@ -48,13 +48,18 @@ client.on('ready', () => {
 
 });
 
-function imageSearch(msg){
+function imageSearch(msg, url) {
   var imageID = getRandomInt(666);
   var filename = config.app.download + imageID.toString() + ".png"
-  download(msg, filename, false, function() {
+  download(msg, filename, url, function() {
     facedetect(filename, function(data) {
-      if (data.success === false)
-      {
+      if (data.success === false) {
+        if (typeof url !== "boolean")
+        {
+          msg.reply("No faces found in this image. :///");
+          msg.reply("For best results the image should be a square like 400x400 Twitter profile images have the best results");
+          return;
+        }
         console.log("False retrying...")
         imageSearch(msg);
         return;
@@ -67,10 +72,20 @@ function imageSearch(msg){
 }
 
 client.on('message', msg => {
-  cmsg = msg
-  if (msg.content === '!rofl') {
-    imageSearch(msg);
-  };
+  var words = msg.cleanContent.split(' ');
+  if (words[0] === '*rofl') {
+    msg.reply("Searching...")
+    imageSearch(msg, false);
+  } else if (words[0] === '*search') {
+    if (words[1] === undefined)
+    {
+      msg.reply("Usage: !search http://incredible.com/myimage.jpg")
+      return;
+    }
+    msg.reply("Searching for this image")
+    imageSearch(msg, words[1]);
+  }
+
 });
 
 function getRandomInt(max) {
@@ -81,12 +96,12 @@ function getRandomInt(max) {
 //https://stackoverflow.com/questions/12740659/downloading-images-with-node-js
 function download(msg, filename, url, callback) {
   var link = config.app.link;
-  if (typeof url !== "boolean")
-  {
+  if (typeof url !== "boolean") {
     link = url;
   }
   request.head(link, function(err, res, body) {
     if (err) {
+      console.log(err);
       msg.reply("Error while getting the image :////")
       return;
     }
@@ -96,7 +111,7 @@ function download(msg, filename, url, callback) {
 
 function convertImages(filename, data) {
   console.log(data.success); //true
-  images(filename).draw(images("filters/1.png").resize(data.radius), data.x-(data.radius/2), data.y-(data.radius/2)).save(filename + ".r.png");
+  images(filename).draw(images("filters/1.png").resize(data.radius), data.x - (data.radius / 2), data.y - (data.radius / 2)).save(filename + ".r.png");
   return filename + ".r.png";
 }
 
@@ -114,7 +129,7 @@ function rgba_to_grayscale(rgba, nrows, ncols) {
 }
 
 function facedetect(fileurl, callback) {
-  var xy =  images(fileurl).size();
+  var xy = images(fileurl).size();
   console.log(xy);
   var ctx = createCanvas(xy.width, xy.height).getContext('2d');
   var img = loadImage(fileurl);
@@ -146,7 +161,8 @@ function facedetect(fileurl, callback) {
     for (i = 0; i < dets.length; ++i) {
       // check the detection score
       // if it's above the threshold, draw it
-      if (dets[i][3] > qthresh && dets[i][2] > 110) { //Compare score && radius size
+      console.log(dets[i][3])
+      if (dets[i][3] > qthresh && dets[i][2] > 60) { //Compare score && radius size
         console.log("x: " + dets[i][1], "y: " + dets[i][0], "radius: " + dets[i][2]);
         callback({
           success: true,

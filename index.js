@@ -83,7 +83,7 @@ function download(msg, filename, callback) {
 
 function convertImages(filename, data) {
   console.log(data.success); //true
-  images(filename).draw(images("filters/1.png"), data.x, data.y).save(filename + ".r.png");
+  images(filename).draw(images("filters/1.png").size(data.radius), data.x-(data.radius/2), data.y-(data.radius/2)).save(filename + ".r.png");
   return filename + ".r.png";
 }
 
@@ -128,7 +128,7 @@ function facedetect(fileurl, callback) {
     // cluster the obtained detections
     dets = pico.cluster_detections(dets, 0.2); // set IoU threshold to 0.2
     // draw results
-    qthresh = 4.7 // this constant is empirical: other cascades might require a different one
+    qthresh = 5.0 // this constant is empirical: other cascades might require a different one
     for (i = 0; i < dets.length; ++i) {
       // check the detection score
       // if it's above the threshold, draw it
@@ -148,7 +148,7 @@ function facedetect(fileurl, callback) {
       success: false,
       x: 0,
       y: 0,
-      radius: 0
+      radius: 600
     });
     return;
   }).catch(err => {

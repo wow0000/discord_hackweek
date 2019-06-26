@@ -48,19 +48,28 @@ client.on('ready', () => {
 
 });
 
+function imageSearch(msg){
+  var imageID = getRandomInt(666);
+  var filename = config.app.download + imageID.toString() + ".png"
+  download(msg, filename, false, function() {
+    facedetect(filename, function(data) {
+      if (data.success === false)
+      {
+        console.log("False retrying...")
+        imageSearch(msg);
+        return;
+      }
+      var attach = new Attachment(convertImages(filename, data));
+      msg.channel.send(attach);
+      console.log("sent");
+    });
+  });
+}
+
 client.on('message', msg => {
   cmsg = msg
   if (msg.content === '!rofl') {
-    var imageID = getRandomInt(666);
-    var filename = config.app.download + imageID.toString() + ".png"
-    download(msg, filename, function() {
-      facedetect(filename, function(data) {
-        console.log(data);
-        var attach = new Attachment(convertImages(filename, data));
-        msg.channel.send(attach);
-        console.log("sent");
-      });
-    });
+    imageSearch(msg);
   };
 });
 
@@ -70,20 +79,24 @@ function getRandomInt(max) {
 
 
 //https://stackoverflow.com/questions/12740659/downloading-images-with-node-js
-function download(msg, filename, callback) {
-
-  request.head(config.app.link, function(err, res, body) {
+function download(msg, filename, url, callback) {
+  var link = config.app.link;
+  if (typeof url !== "boolean")
+  {
+    link = url;
+  }
+  request.head(link, function(err, res, body) {
     if (err) {
       msg.reply("Error while getting the image :////")
       return;
     }
-    request(config.app.link).pipe(fs.createWriteStream(filename)).on("close", callback);
+    request(link).pipe(fs.createWriteStream(filename)).on("close", callback);
   });
 };
 
 function convertImages(filename, data) {
   console.log(data.success); //true
-  images(filename).draw(images("filters/1.png").size(data.radius), data.x-(data.radius/2), data.y-(data.radius/2)).save(filename + ".r.png");
+  images(filename).draw(images("filters/1.png").resize(data.radius), data.x-(data.radius/2), data.y-(data.radius/2)).save(filename + ".r.png");
   return filename + ".r.png";
 }
 
@@ -101,18 +114,20 @@ function rgba_to_grayscale(rgba, nrows, ncols) {
 }
 
 function facedetect(fileurl, callback) {
-  var ctx = createCanvas(600, 600).getContext('2d');
+  var xy =  images(fileurl).size();
+  console.log(xy);
+  var ctx = createCanvas(xy.width, xy.height).getContext('2d');
   var img = loadImage(fileurl);
   img.then(function(nik) {
     ctx.drawImage(nik, 0, 0);
 
-    var rgba = ctx.getImageData(0, 0, 600, 600).data;
+    var rgba = ctx.getImageData(0, 0, xy.width, xy.height).data;
     // prepare input to `run_cascade`
     image = {
-      "pixels": rgba_to_grayscale(rgba, 600, 600),
-      "nrows": 600,
-      "ncols": 600,
-      "ldim": 600
+      "pixels": rgba_to_grayscale(rgba, xy.height, xy.width),
+      "nrows": xy.width,
+      "ncols": xy.height,
+      "ldim": xy.height
     }
     params = {
       "shiftfactor": 0.1, // move the detection window by 10% of its size
@@ -123,7 +138,6 @@ function facedetect(fileurl, callback) {
     // run the cascade over the image
     // dets is an array that contains (r, c, s, q) quadruplets
     // (representing row, column, scale and detection score)
-    //console.log(ctx.getImageData(0,0,600,600).data);
     dets = pico.run_cascade(image, facefinder_classify_region, params);
     // cluster the obtained detections
     dets = pico.cluster_detections(dets, 0.2); // set IoU threshold to 0.2
@@ -132,13 +146,14 @@ function facedetect(fileurl, callback) {
     for (i = 0; i < dets.length; ++i) {
       // check the detection score
       // if it's above the threshold, draw it
-      if (dets[i][3] > qthresh) {
+      if (dets[i][3] > qthresh && dets[i][2] > 110) { //Compare score && radius size
         console.log("x: " + dets[i][1], "y: " + dets[i][0], "radius: " + dets[i][2]);
         callback({
           success: true,
           x: dets[i][1],
           y: dets[i][0],
-          radius: dets[i][2]
+          radius: dets[i][2],
+          prob: dets[i][3]
         });
         return;
       }
@@ -148,15 +163,13 @@ function facedetect(fileurl, callback) {
       success: false,
       x: 0,
       y: 0,
-      radius: 600
+      radius: xy.height,
+      prob: 0
     });
     return;
   }).catch(err => {
     console.log('oh no!', err)
   })
-
-
-
 }
 
 client.login(config.discord.token);

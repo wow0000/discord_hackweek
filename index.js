@@ -181,12 +181,12 @@ function facedetect(fileurl, msg, callback) {
     // cluster the obtained detections
     dets = pico.cluster_detections(dets, 0.2); // set IoU threshold to 0.2
     // draw results
-    qthresh = 5.0 // this constant is empirical: other cascades might require a different one
+    qthresh = config.app.minimalscore; // this constant is empirical: other cascades might require a different one Default 5.0
     for (i = 0; i < dets.length; ++i) {
       // check the detection score
       // if it's above the threshold, draw it
       console.log(dets[i][3])
-      if (dets[i][3] > qthresh && dets[i][2] > 60) { //Compare score && radius size
+      if (dets[i][3] > qthresh && dets[i][2] > config.app.minimalsize) { //Compare score && radius size
         console.log("x: " + dets[i][1], "y: " + dets[i][0], "radius: " + dets[i][2]);
         callback({
           success: true,

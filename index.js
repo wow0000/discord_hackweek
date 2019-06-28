@@ -23,7 +23,7 @@ const client = new Client();
 
 //Filling the filters array
 fs.readdirSync(config.app.filters).forEach(file => {
-  console.log("Logged: "+file.toString());
+  console.log("Logged: " + file.toString());
   filters.push(file);
 });
 
@@ -78,20 +78,25 @@ function imageSearch(msg, url) {
 }
 
 client.on('message', msg => {
-  var words = msg.cleanContent.split(' ');
-  if (words[0] === '*rofl') {
-    msg.reply("Searching...")
-    imageSearch(msg, false);
-  } else if (words[0] === '*search') {
-    if (words[1] === undefined) {
-      msg.reply("Usage: *search http://incredible.com/myimage.jpg")
-      return;
+  try {
+    var words = msg.cleanContent.split(' ');
+    if (words[0] === '*rofl') {
+      msg.reply("Searching...")
+      imageSearch(msg, false);
+    } else if (words[0] === '*search') {
+      if (words[1] === undefined) {
+        msg.reply("Usage: *search http://incredible.com/myimage.jpg")
+        return;
+      }
+      msg.reply("Searching for this image")
+      imageSearch(msg, words[1]);
     }
-    msg.reply("Searching for this image")
-    imageSearch(msg, words[1]);
+  } catch (err)
+  {
+    msg.reply("An error has occured :////////////////////")
+    console.log(err);
   }
-
-});
+})
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
@@ -118,7 +123,7 @@ function convertImages(filename, data) {
   console.log(data.success); //true
   //random filters choose
   var id = getRandomInt(filters.length);
-  images(filename).draw(images(config.app.filters+filters[id]).resize(data.radius), data.x - (data.radius / 2), data.y - (data.radius / 2)).save(filename + ".r.png");
+  images(filename).draw(images(config.app.filters + filters[id]).resize(data.radius), data.x - (data.radius / 2), data.y - (data.radius / 2)).save(filename + ".r.png");
   return filename + ".r.png";
 }
 

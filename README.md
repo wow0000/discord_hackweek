@@ -26,7 +26,7 @@ for a image that you choosed
 
 # Features
 
-- Face recognition with the position of the face to adjust the filter
+- Face detection with the position of the face to adjust the filter
 
 - Have bugs that are actualy funny (a big one)
 
@@ -41,7 +41,7 @@ for a image that you choosed
 - Configurable
 
 # Acknowledgement
-[pico.js](https://github.com/tehnokv/picojs) for the face recognition and the cascade
+[pico.js](https://github.com/tehnokv/picojs) for the face detection and the cascade
 
 [discord.js](https://discord.js.org/)
 
@@ -62,7 +62,7 @@ enjoy ( ͡° ͜ʖ ͡°)
 
 # What does the console text means ?
 ![](http://i64.tinypic.com/2jc61ll.png)
-This console text is not random garbage but data to proper face recognition and debug in case of a bad image
+This console text is not random garbage but data to proper face detection and debug in case of a bad image
 
 * The first lines with "Logged: " is the filters that will be randomly choosed in the filters/ folder
 
@@ -79,7 +79,7 @@ This console text is not random garbage but data to proper face recognition and 
 
 * (Number3) x,y and radius are the pixel where the middle of the face is detected the radius is kind of the size of the head
 
-* true means that the face has been well recognised and should be sent
+* true means that the face has been well detected and should be sent in the next step 
 
 * sent means that the image has been sent through an attachement in the same discord channel
 
@@ -89,3 +89,10 @@ This console text is not random garbage but data to proper face recognition and 
 > git update-index --assume-unchanged config.json
 
 This command will forgot the tracking of config.json :///
+
+# How can I improve results from the face detection ?
+
+In the config file there is 2 values:
+- "minimalscore": It's the minimal score to detect a face, by default it's 5.0, a higher number may take more time to find an image
+
+- "minimalsize": It's the minimum radius in pixel that the face should exceed to show on the screen. A small value will make bugs in the face detection, a high value may break face detection on images

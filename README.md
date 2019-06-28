@@ -40,3 +40,26 @@ Fill your discord bot token in the config.json file
 > node index.js
 
 enjoy ( ͡° ͜ʖ ͡°) 
+
+# What does the console text means ?
+![](http://i64.tinypic.com/2jc61ll.png)
+This console text is not random garbage but data to proper face recognition and debug in case of a bad image
+
+* The first lines with "Logged: " is the filters that will be randomly choosed in the filters/ folder
+
+* cascade loaded is the download of an external cascade used to determine a face on a black and white background [Cascades][https://becominghuman.ai/face-detection-using-opencv-with-haar-cascade-classifiers-941dbb25177]
+
+* The rdy A.K.A. ready line is when the bot actualy listen to commands and is connected to discord servers
+
+
+## The following lines are triggered by the use of a command like search or rofl
+
+* (Number1) The width and the height is the size of the image that should be a square. I'll be resized if it isnt, don't worry :P
+
+* (Number2) 159 in this screenshot is the score of the face detection the minimum is 5
+
+* (Number3) x,y and radius are the pixel where the middle of the face is detected the radius is kind of the size of the head
+
+* true means that the face has been well recognised and should be sent
+
+* sent means that the image has been sent through an attachement in the same discord channel

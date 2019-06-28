@@ -13,11 +13,19 @@ const config = require('./config.json');
 const fs = require('fs');
 const request = require('request');
 
+var filters = [];
+
 const {
   Client,
   Attachment
 } = require('discord.js');
 const client = new Client();
+
+//Filling the filters array
+fs.readdirSync(config.app.filters).forEach(file => {
+  console.log("Logged: "+file.toString());
+  filters.push(file);
+});
 
 //Init face recognition variables
 
@@ -108,7 +116,9 @@ function download(msg, filename, url, callback) {
 
 function convertImages(filename, data) {
   console.log(data.success); //true
-  images(filename).draw(images("filters/1.png").resize(data.radius), data.x - (data.radius / 2), data.y - (data.radius / 2)).save(filename + ".r.png");
+  //random filters choose
+  var id = getRandomInt(filters.length);
+  images(filename).draw(images(config.app.filters+filters[id]).resize(data.radius), data.x - (data.radius / 2), data.y - (data.radius / 2)).save(filename + ".r.png");
   return filename + ".r.png";
 }
 

@@ -21,8 +21,24 @@ for a image that you choosed
 
 ![](http://i66.tinypic.com/2zrdocl.png)
 
+# Features
+
+- Face recognition with the position of the face to adjust the filter
+
+- Have bugs that are actualy funny (a big one)
+
+- Two commands that are easy to remember "rofl & search"
+ 
+- Image downloading and crop to something square
+
+- Awesome filters
+
+- Easy to setup
+
+- Configurable
+
 # Acknowledgement
-[pico.js](https://github.com/tehnokv/picojs) for the face recognision and the cascade
+[pico.js](https://github.com/tehnokv/picojs) for the face recognition and the cascade
 
 [discord.js](https://discord.js.org/)
 

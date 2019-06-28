@@ -63,3 +63,10 @@ This console text is not random garbage but data to proper face recognition and 
 * true means that the face has been well recognised and should be sent
 
 * sent means that the image has been sent through an attachement in the same discord channel
+
+# How can I change the config file without breaking git ?
+![](http://i68.tinypic.com/2hs0iz8.png)
+
+> git update-index --assume-unchanged config.json
+
+This command will forgot the tracking of config.json :///

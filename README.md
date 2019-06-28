@@ -1,5 +1,8 @@
 # BEAUTIFIER 2000
 This incredible bot will use computer vision to place a serious filter on an image.
+
+[Test this bot !](https://discord.gg/zCMwZaD)
+
 ![](http://i63.tinypic.com/16geqg3.png)
 
 ![](http://i64.tinypic.com/2zs8huw.png)

@@ -43,6 +43,11 @@ fetch(cascadeurl).then(function(response) {
 
 client.on('ready', () => {
   //Clean the cache
+
+  if (!fs.existsSync(config.app.download)){
+    fs.mkdirSync(config.app.download);
+  }
+
   fs.readdir(config.app.download, (err, files) => {
     if (err) throw err;
     for (const file of files) {

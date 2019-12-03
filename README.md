@@ -3,17 +3,17 @@ This incredible bot will use computer vision to place a serious filter on an ima
 
 [Test this bot !](https://discord.gg/zCMwZaD)
 
-![](http://i63.tinypic.com/16geqg3.png)
+![](https://i.imgur.com/J6TIAKo.png)
 
-![](http://i64.tinypic.com/2zs8huw.png)
+![](https://i.imgur.com/hfbHesB.png)
 
-![](http://i68.tinypic.com/4r5gzn.png)
+![](https://i.imgur.com/a4ox9ju.png)
 
-![](http://i63.tinypic.com/2motcfl.png)
+![](https://i.imgur.com/fVAtRpT.png)
 
 Or some bugs
 
-![](http://i68.tinypic.com/ke962x.png)
+![](https://i.imgur.com/nlm9lL4.png)
 
 # BUT HOW TO USE IT ? 
 >_*rofl_
@@ -22,7 +22,7 @@ for a random image
 >_*search URL_
 for a image that you choosed
 
-![](http://i66.tinypic.com/2zrdocl.png)
+![](https://i.imgur.com/t8Eg7Z3.png)
 
 # Features
 
@@ -61,7 +61,7 @@ Fill your discord bot token in the config.json file
 enjoy ( ͡° ͜ʖ ͡°) 
 
 # What does the console text means ?
-![](http://i64.tinypic.com/2jc61ll.png)
+![](https://i.imgur.com/5J97u3m.png)
 This console text is not random garbage but data to proper face detection and debug in case of a bad image
 
 * The first lines with "Logged: " is the filters that will be randomly choosed in the filters/ folder
@@ -84,7 +84,7 @@ This console text is not random garbage but data to proper face detection and de
 * sent means that the image has been sent through an attachement in the same discord channel
 
 # How can I change the config file without breaking git ?
-![](http://i68.tinypic.com/2hs0iz8.png)
+![](https://i.imgur.com/AXL93DN.png)
 
 > git update-index --assume-unchanged config.json
 
